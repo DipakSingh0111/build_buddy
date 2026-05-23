@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Menu, X, MapPin, ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -46,62 +47,67 @@ const Navbar = () => {
 
           {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-10">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="relative text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               Home
               <span className="absolute left-0 -bottom-[31px] w-full h-[3px] bg-[#F4B400] rounded-full"></span>
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/find-workers"
               className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               Find Workers
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/contractors"
               className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               For Contractors
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/materials"
               className="flex items-center gap-2 text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               Materials
               <span className="bg-[#F4B400] text-black text-[9px] px-2 py-[5px] rounded-full font-bold">
                 NEW
               </span>
-            </a>
+            </Link>
 
-            <a
-              href="/"
+            <Link
+              to="/pricing"
               className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               Pricing
-            </a>
-
-            <a
-              href="/"
+            </Link>
+            <Link
+              to="/about"
               className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
               About Us
-            </a>
+            </Link>
           </nav>
 
           {/* BUTTONS */}
           <div className="hidden lg:flex items-center gap-4">
-            <button className="px-7 py-3 rounded-2xl border border-gray-300 bg-white text-[#111827] font-semibold text-[15px] hover:bg-gray-50 transition">
+            <Link
+              to="/login"
+              className="px-7 py-3 rounded-2xl border border-gray-300 bg-white text-[#111827] font-semibold text-[15px] hover:bg-gray-50 transition"
+            >
               Login
-            </button>
+            </Link>
 
-            <button className="px-7 py-3 rounded-2xl bg-[#F4B400] hover:bg-[#e0a500] text-black font-semibold text-[15px] shadow-lg shadow-yellow-100 transition-all">
+            <Link
+              to="/register"
+              className="px-7 py-3 rounded-2xl bg-[#F4B400] hover:bg-[#e0a500] text-black font-semibold text-[15px] shadow-lg shadow-yellow-100 transition-all"
+            >
               Register
-            </button>
+            </Link>
           </div>
 
           {/* MOBILE MENU BUTTON */}
@@ -136,46 +142,64 @@ const Navbar = () => {
 
             {/* NAV LINKS */}
             <div className="flex flex-col gap-6 mt-8">
-              <a href="/" className="text-[#F4B400] font-bold text-[16px]">
+              <Link to="/" className="text-[#F4B400] font-bold text-[16px]">
                 Home
-              </a>
+              </Link>
 
-              <a href="/" className="text-[#111827] font-semibold text-[16px]">
+              <Link
+                to="/find-workers"
+                className="text-[#111827] font-semibold text-[16px]"
+              >
                 Find Workers
-              </a>
+              </Link>
 
-              <a href="/" className="text-[#111827] font-semibold text-[16px]">
+              <Link
+                to="/contractors"
+                className="text-[#111827] font-semibold text-[16px]"
+              >
                 For Contractors
-              </a>
+              </Link>
 
-              <a
-                href="/"
+              <Link
+                to="/materials"
                 className="flex items-center gap-2 text-[#111827] font-semibold text-[16px]"
               >
                 Materials
                 <span className="bg-[#F4B400] text-black text-[9px] px-2 py-1 rounded-full font-bold">
                   NEW
                 </span>
-              </a>
+              </Link>
 
-              <a href="/" className="text-[#111827] font-semibold text-[16px]">
+              <Link
+                to="/pricing"
+                className="text-[#111827] font-semibold text-[16px]"
+              >
                 Pricing
-              </a>
+              </Link>
 
-              <a href="/" className="text-[#111827] font-semibold text-[16px]">
+              <Link
+                to="/about"
+                className="text-[#111827] font-semibold text-[16px]"
+              >
                 About Us
-              </a>
+              </Link>
             </div>
 
             {/* MOBILE BUTTONS */}
             <div className="grid grid-cols-2 gap-4 mt-8">
-              <button className="py-3 rounded-2xl border border-gray-300 font-semibold text-[#111827] cursor-pointer">
+              <Link
+                to="/login"
+                className="py-3 rounded-2xl border border-gray-300 font-semibold text-[#111827] cursor-pointer"
+              >
                 Login
-              </button>
+              </Link>
 
-              <button className="py-3 rounded-2xl bg-[#F4B400] font-semibold text-black shadow-md cursor-pointer">
+              <Link
+                to="/register"
+                className="py-3 rounded-2xl bg-[#F4B400] font-semibold text-black shadow-md cursor-pointer"
+              >
                 Register
-              </button>
+              </Link>
             </div>
           </div>
         )}
