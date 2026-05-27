@@ -1,9 +1,58 @@
-import { useState } from "react";
-import { Menu, X, MapPin, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, MapPin, ChevronDown, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+
+  // LOCATION STATES
+  const [location, setLocation] = useState("Detecting...");
+  const [loadingLocation, setLoadingLocation] = useState(true);
+
+  // GET USER LOCATION
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+
+          // REVERSE GEOCODING API
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+          );
+
+          const data = await response.json();
+
+          // FULL LOCATION
+          const area =
+            data.address.suburb ||
+            data.address.neighbourhood ||
+            data.address.village ||
+            data.address.city_district ||
+            data.address.state_district;
+
+          const city =
+            data.address.city || data.address.town || data.address.county;
+
+          const state = data.address.state;
+
+          // FINAL LOCATION
+          const finalLocation = `${area || city}, ${city || state}`;
+
+          setLocation(finalLocation);
+        } catch (error) {
+          setLocation("Location Error", error);
+        } finally {
+          setLoadingLocation(false);
+        }
+      },
+      () => {
+        setLocation("Select Location");
+        setLoadingLocation(false);
+      },
+    );
+  }, []);
 
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -12,34 +61,53 @@ const Navbar = () => {
           {/* LEFT */}
           <div className="flex items-center gap-14">
             {/* LOGO */}
-            <div className="cursor-pointer flex-shrink-0">
+            <Link to="/" className="cursor-pointer flex-shrink-0">
               <h1 className="text-[36px] leading-none font-black tracking-[-1px]">
                 <span className="text-[#071B3B]">Build</span>
+
                 <span className="text-[#F4B400]">Buddy</span>
               </h1>
 
               <p className="text-[11px] text-gray-400 font-semibold tracking-wide mt-1">
                 Har Kaam, Pakka Kaam
               </p>
-            </div>
+            </Link>
 
             {/* LOCATION */}
-            <div className="hidden xl:flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all cursor-pointer">
-              <div className="w-10 h-10 rounded-xl bg-[#FFF8E8] flex items-center justify-center">
+            <div className="hidden xl:flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all cursor-pointer max-w-[240px]">
+              {/* ICON */}
+              <div className="w-10 h-10 rounded-xl bg-[#FFF8E8] flex items-center justify-center flex-shrink-0">
                 <MapPin className="text-[#F4B400]" size={18} />
               </div>
 
-              <div>
+              {/* TEXT */}
+              <div className="overflow-hidden">
                 <p className="text-[11px] text-gray-400 font-medium">
                   Location
                 </p>
 
                 <div className="flex items-center gap-1 mt-0.5">
-                  <span className="font-bold text-[14px] text-[#111827]">
-                    Delhi NCR
-                  </span>
+                  {loadingLocation ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2
+                        size={14}
+                        className="animate-spin text-[#F4B400]"
+                      />
 
-                  <ChevronDown size={15} />
+                      <span className="font-bold text-[14px] text-[#111827]">
+                        Detecting...
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      {/* LOCATION TEXT */}
+                      <span className="font-bold text-[14px] text-[#111827] truncate">
+                        {location}
+                      </span>
+
+                      <ChevronDown size={15} className="flex-shrink-0" />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -80,12 +148,6 @@ const Navbar = () => {
             </Link>
 
             <Link
-              to="/pricing"
-              className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
-            >
-              Pricing
-            </Link>
-            <Link
               to="/about"
               className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
             >
@@ -123,19 +185,36 @@ const Navbar = () => {
         {/* MOBILE MENU */}
         {open && (
           <div className="lg:hidden py-6 border-t border-gray-100">
-            {/* LOCATION */}
+            {/* MOBILE LOCATION */}
             <div className="flex items-center gap-3 bg-[#FAFAFA] border border-gray-200 rounded-2xl p-4">
-              <div className="w-11 h-11 rounded-xl bg-[#FFF8E8] flex items-center justify-center">
+              <div className="w-11 h-11 rounded-xl bg-[#FFF8E8] flex items-center justify-center flex-shrink-0">
                 <MapPin className="text-[#F4B400]" size={18} />
               </div>
 
-              <div>
+              <div className="overflow-hidden">
                 <p className="text-[11px] text-gray-400">Location</p>
 
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-[#111827]">Delhi NCR</span>
+                <div className="flex items-center gap-2">
+                  {loadingLocation ? (
+                    <>
+                      <Loader2
+                        size={14}
+                        className="animate-spin text-[#F4B400]"
+                      />
 
-                  <ChevronDown size={15} />
+                      <span className="font-bold text-[#111827]">
+                        Detecting...
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-bold text-[#111827] truncate">
+                        {location}
+                      </span>
+
+                      <ChevronDown size={15} className="flex-shrink-0" />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -171,13 +250,6 @@ const Navbar = () => {
               </Link>
 
               <Link
-                to="/pricing"
-                className="text-[#111827] font-semibold text-[16px]"
-              >
-                Pricing
-              </Link>
-
-              <Link
                 to="/about"
                 className="text-[#111827] font-semibold text-[16px]"
               >
@@ -189,14 +261,14 @@ const Navbar = () => {
             <div className="grid grid-cols-2 gap-4 mt-8">
               <Link
                 to="/login"
-                className="py-3 rounded-2xl border border-gray-300 font-semibold text-[#111827] cursor-pointer"
+                className="py-3 rounded-2xl border border-gray-300 font-semibold text-[#111827] text-center"
               >
                 Login
               </Link>
 
               <Link
                 to="/register"
-                className="py-3 rounded-2xl bg-[#F4B400] font-semibold text-black shadow-md cursor-pointer"
+                className="py-3 rounded-2xl bg-[#F4B400] font-semibold text-black shadow-md text-center"
               >
                 Register
               </Link>

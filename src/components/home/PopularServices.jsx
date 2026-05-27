@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   ArrowRight,
   Wrench,
@@ -7,6 +7,8 @@ import {
   Zap,
   Building2,
   Drill,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const services = [
@@ -14,7 +16,7 @@ const services = [
     id: 1,
     title: "Electrician",
     subtitle: "24/7 Electrical Services",
-    icon: <Zap size={28} />,
+    icon: <Zap size={24} />,
     image:
       "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop",
   },
@@ -23,7 +25,7 @@ const services = [
     id: 2,
     title: "Plumber",
     subtitle: "Expert Plumbing Solutions",
-    icon: <Wrench size={28} />,
+    icon: <Wrench size={24} />,
     image:
       "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=1200&auto=format&fit=crop",
   },
@@ -32,7 +34,7 @@ const services = [
     id: 3,
     title: "Painter",
     subtitle: "Premium Wall Finishing",
-    icon: <Paintbrush size={28} />,
+    icon: <Paintbrush size={24} />,
     image:
       "https://images.unsplash.com/photo-1562259949-e8e7689d7828?q=80&w=1200&auto=format&fit=crop",
   },
@@ -41,7 +43,7 @@ const services = [
     id: 4,
     title: "Carpenter",
     subtitle: "Furniture & Wood Work",
-    icon: <Hammer size={28} />,
+    icon: <Hammer size={24} />,
     image:
       "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop",
   },
@@ -50,7 +52,7 @@ const services = [
     id: 5,
     title: "Construction",
     subtitle: "Skilled Site Workers",
-    icon: <Building2 size={28} />,
+    icon: <Building2 size={24} />,
     image:
       "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop",
   },
@@ -59,91 +61,137 @@ const services = [
     id: 6,
     title: "Machine Operator",
     subtitle: "Heavy Machinery Experts",
-    icon: <Drill size={28} />,
+    icon: <Drill size={24} />,
     image:
       "https://images.unsplash.com/photo-1513828583688-c52646db42da?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
 const PopularServices = () => {
-  return (
-    <section className="w-full bg-[#0B1220] py-28 overflow-hidden relative">
-      {/* GLOW */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F4B400]/10 blur-[120px] rounded-full"></div>
+  const sliderRef = useRef(null);
 
-      <div className="relative z-10 w-full px-5 md:px-10 xl:px-20">
-        {/* TOP SECTION */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+  const scrollLeft = () => {
+    sliderRef.current.scrollBy({
+      left: -300,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current.scrollBy({
+      left: 300,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <section className="w-full bg-white py-14 sm:py-16 overflow-hidden">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
+        {/* TOP */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <div>
-            <p className="text-[#F4B400] uppercase tracking-[4px] text-sm font-bold">
+            <p className="text-[#F4B400] uppercase tracking-[3px] text-xs sm:text-sm font-bold">
               Our Services
             </p>
 
-            <h2 className="text-white text-[45px] md:text-[65px] leading-[1.05] font-black mt-5">
+            <h2 className="text-[#111827] text-[30px] sm:text-[46px] lg:text-[60px] leading-tight font-black mt-3">
               Popular Services
             </h2>
 
-            <p className="text-gray-400 text-lg leading-8 mt-6 max-w-[700px]">
-              Hire verified construction workers for repair, maintenance,
-              renovation & commercial projects instantly.
+            <p className="text-gray-500 text-sm sm:text-lg leading-7 mt-4 max-w-[700px]">
+              Hire verified construction workers for repair, maintenance &
+              renovation projects instantly.
             </p>
           </div>
 
-          {/* BUTTON */}
-          <button className="h-16 px-8 rounded-2xl bg-[#F4B400] hover:bg-[#deaa05] transition-all text-black font-bold flex items-center gap-3 w-fit shadow-2xl">
-            Explore All Services
-            <ArrowRight size={20} />
+          <button className="h-12 sm:h-14 px-6 rounded-xl bg-[#F4B400] hover:bg-[#e2ab00] transition text-black font-semibold flex items-center gap-2 w-fit shadow-lg">
+            Explore Services
+            <ArrowRight size={18} />
           </button>
         </div>
 
-        {/* GRID */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 mt-20">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className="group relative h-[450px] rounded-[36px] overflow-hidden"
-            >
-              {/* IMAGE */}
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-all duration-700"
-              />
+        {/* SLIDER */}
+        <div className="relative mt-12">
+          {/* LEFT */}
+          <button
+            onClick={scrollLeft}
+            className="hidden lg:flex absolute left-[-18px] top-[40%] z-20 bg-white border border-gray-200 w-12 h-12 rounded-full items-center justify-center shadow-lg hover:scale-105 transition"
+          >
+            <ChevronLeft size={22} />
+          </button>
 
-              {/* OVERLAY */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          {/* RIGHT */}
+          <button
+            onClick={scrollRight}
+            className="hidden lg:flex absolute right-[-18px] top-[40%] z-20 bg-white border border-gray-200 w-12 h-12 rounded-full items-center justify-center shadow-lg hover:scale-105 transition"
+          >
+            <ChevronRight size={22} />
+          </button>
 
-              {/* ICON */}
-              <div className="absolute top-6 left-6 w-16 h-16 rounded-2xl bg-[#F4B400] text-black flex items-center justify-center shadow-2xl">
-                {service.icon}
-              </div>
-
-              {/* CONTENT */}
-              <div className="absolute bottom-0 left-0 right-0 p-8">
-                <p className="text-[#F4B400] uppercase tracking-[3px] text-xs font-semibold">
-                  Verified Service
-                </p>
-
-                <h3 className="text-white text-4xl font-black mt-3">
-                  {service.title}
-                </h3>
-
-                <p className="text-gray-300 mt-4 text-lg">{service.subtitle}</p>
-
-                {/* BUTTON */}
-                <button className="mt-7 flex items-center gap-3 text-white font-semibold group-hover:text-[#F4B400] transition-all">
-                  Book Service
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-all"
+          {/* CARDS */}
+          <div
+            ref={sliderRef}
+            className="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide"
+          >
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className="
+                  min-w-[78%]
+                  sm:min-w-[48%]
+                  lg:min-w-[23%]
+                  flex-shrink-0
+                  bg-white
+                  rounded-[24px]
+                  overflow-hidden
+                  border border-gray-200
+                  shadow-sm
+                  hover:shadow-xl
+                  transition-all
+                  duration-300
+                  group
+                "
+              >
+                {/* IMAGE */}
+                <div className="relative overflow-hidden h-[220px] sm:h-[240px]">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
-                </button>
-              </div>
 
-              {/* HOVER BORDER */}
-              <div className="absolute inset-0 border border-white/10 group-hover:border-[#F4B400]/50 rounded-[36px] transition-all"></div>
-            </div>
-          ))}
+                  {/* ICON */}
+                  <div className="absolute top-4 left-4 w-12 h-12 rounded-xl bg-white text-[#F4B400] flex items-center justify-center shadow-md">
+                    {service.icon}
+                  </div>
+                </div>
+
+                {/* CONTENT */}
+                <div className="p-5">
+                  <p className="text-[#F4B400] uppercase tracking-[2px] text-[10px] font-bold">
+                    Verified Service
+                  </p>
+
+                  <h3 className="text-[#111827] text-[24px] font-bold mt-2">
+                    {service.title}
+                  </h3>
+
+                  <p className="text-gray-500 mt-2 text-sm leading-6">
+                    {service.subtitle}
+                  </p>
+
+                  {/* BUTTON */}
+                  <button className="mt-5 flex items-center gap-2 text-[#111827] font-semibold group-hover:text-[#F4B400] transition">
+                    Book Service
+                    <ArrowRight
+                      size={16}
+                      className="group-hover:translate-x-1 transition"
+                    />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
