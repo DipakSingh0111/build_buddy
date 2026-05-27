@@ -24,25 +24,13 @@ const Navbar = () => {
 
           const data = await response.json();
 
-          // FULL LOCATION
-          const area =
-            data.address.suburb ||
-            data.address.neighbourhood ||
-            data.address.village ||
-            data.address.city_district ||
-            data.address.state_district;
+          // FULL ADDRESS
+          const fullAddress = data.display_name;
 
-          const city =
-            data.address.city || data.address.town || data.address.county;
-
-          const state = data.address.state;
-
-          // FINAL LOCATION
-          const finalLocation = `${area || city}, ${city || state}`;
-
-          setLocation(finalLocation);
+          setLocation(fullAddress);
         } catch (error) {
-          setLocation("Location Error", error);
+          console.log(error);
+          setLocation("Location Error");
         } finally {
           setLoadingLocation(false);
         }
