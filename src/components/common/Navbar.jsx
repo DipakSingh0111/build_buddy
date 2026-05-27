@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, MapPin, ChevronDown, Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -42,6 +43,17 @@ const Navbar = () => {
     );
   }, []);
 
+  // ACTIVE LINK STYLE
+  const navLinkStyle = ({ isActive }) =>
+    `font-semibold text-[15px] transition hover:text-[#F4B400] ${
+      isActive ? "text-[#F4B400]" : "text-[#111827]"
+    }`;
+
+  const mobileNavLinkStyle = ({ isActive }) =>
+    `font-semibold text-[16px] transition ${
+      isActive ? "text-[#F4B400]" : "text-[#111827]"
+    }`;
+
   return (
     <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="w-full px-5 md:px-10 xl:px-16">
@@ -62,7 +74,7 @@ const Navbar = () => {
             </Link>
 
             {/* LOCATION */}
-            <div className="hidden xl:flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all cursor-pointer max-w-[240px]">
+            <div className="hidden xl:flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-2.5 shadow-sm hover:shadow-md transition-all cursor-pointer max-w-[320px]">
               {/* ICON */}
               <div className="w-10 h-10 rounded-xl bg-[#FFF8E8] flex items-center justify-center flex-shrink-0">
                 <MapPin className="text-[#F4B400]" size={18} />
@@ -88,7 +100,6 @@ const Navbar = () => {
                     </div>
                   ) : (
                     <>
-                      {/* LOCATION TEXT */}
                       <span className="font-bold text-[14px] text-[#111827] truncate">
                         {location}
                       </span>
@@ -103,44 +114,35 @@ const Navbar = () => {
 
           {/* DESKTOP NAV */}
           <nav className="hidden lg:flex items-center gap-10">
-            <Link
-              to="/"
-              className="relative text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
-            >
+            <NavLink to="/" className={navLinkStyle}>
               Home
-              <span className="absolute left-0 -bottom-[31px] w-full h-[3px] bg-[#F4B400] rounded-full"></span>
-            </Link>
+            </NavLink>
 
-            <Link
-              to="/find-workers"
-              className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
-            >
+            <NavLink to="/find-workers" className={navLinkStyle}>
               Find Workers
-            </Link>
+            </NavLink>
 
-            <Link
-              to="/contractors"
-              className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
-            >
+            <NavLink to="/contractors" className={navLinkStyle}>
               For Contractors
-            </Link>
+            </NavLink>
 
-            <Link
+            <NavLink
               to="/materials"
-              className="flex items-center gap-2 text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
+              className={({ isActive }) =>
+                `flex items-center gap-2 font-semibold text-[15px] transition hover:text-[#F4B400] ${
+                  isActive ? "text-[#F4B400]" : "text-[#111827]"
+                }`
+              }
             >
               Materials
               <span className="bg-[#F4B400] text-black text-[9px] px-2 py-[5px] rounded-full font-bold">
                 NEW
               </span>
-            </Link>
+            </NavLink>
 
-            <Link
-              to="/about"
-              className="text-[#111827] font-semibold text-[15px] hover:text-[#F4B400] transition"
-            >
+            <NavLink to="/about" className={navLinkStyle}>
               About Us
-            </Link>
+            </NavLink>
           </nav>
 
           {/* BUTTONS */}
@@ -209,46 +211,59 @@ const Navbar = () => {
 
             {/* NAV LINKS */}
             <div className="flex flex-col gap-6 mt-8">
-              <Link to="/" className="text-[#F4B400] font-bold text-[16px]">
+              <NavLink
+                to="/"
+                onClick={() => setOpen(false)}
+                className={mobileNavLinkStyle}
+              >
                 Home
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to="/find-workers"
-                className="text-[#111827] font-semibold text-[16px]"
+                onClick={() => setOpen(false)}
+                className={mobileNavLinkStyle}
               >
                 Find Workers
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to="/contractors"
-                className="text-[#111827] font-semibold text-[16px]"
+                onClick={() => setOpen(false)}
+                className={mobileNavLinkStyle}
               >
                 For Contractors
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to="/materials"
-                className="flex items-center gap-2 text-[#111827] font-semibold text-[16px]"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-2 font-semibold text-[16px] ${
+                    isActive ? "text-[#F4B400]" : "text-[#111827]"
+                  }`
+                }
               >
                 Materials
                 <span className="bg-[#F4B400] text-black text-[9px] px-2 py-1 rounded-full font-bold">
                   NEW
                 </span>
-              </Link>
+              </NavLink>
 
-              <Link
+              <NavLink
                 to="/about"
-                className="text-[#111827] font-semibold text-[16px]"
+                onClick={() => setOpen(false)}
+                className={mobileNavLinkStyle}
               >
                 About Us
-              </Link>
+              </NavLink>
             </div>
 
             {/* MOBILE BUTTONS */}
             <div className="grid grid-cols-2 gap-4 mt-8">
               <Link
                 to="/login"
+                onClick={() => setOpen(false)}
                 className="py-3 rounded-2xl border border-gray-300 font-semibold text-[#111827] text-center"
               >
                 Login
@@ -256,6 +271,7 @@ const Navbar = () => {
 
               <Link
                 to="/register"
+                onClick={() => setOpen(false)}
                 className="py-3 rounded-2xl bg-[#F4B400] font-semibold text-black shadow-md text-center"
               >
                 Register
